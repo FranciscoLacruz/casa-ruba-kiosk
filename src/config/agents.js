@@ -2,7 +2,7 @@
 // Los agentes los está creando el equipo de ElevenLabs
 
 export const ELEVENLABS_AGENTS = {
-  es: 'AGENT_ID_ESPAÑOL_AQUI',
+  es: 'agent_0901kjse236sfktvqhyhpzds95dm',
   en: 'AGENT_ID_ENGLISH_HERE',
   fr: 'AGENT_ID_FRANCAIS_ICI',
 };

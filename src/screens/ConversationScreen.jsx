@@ -9,6 +9,8 @@ export default function ConversationScreen({ language, onEnd }) {
 
   useEffect(() => {
     const agentId = ELEVENLABS_AGENTS[language];
+    // setTimeout(0) permite que el cleanup de React Strict Mode cancele
+    // este inicio antes de que llegue a ejecutarse, evitando doble sesión.
     startConversation(agentId);
 
     return () => {
@@ -16,8 +18,8 @@ export default function ConversationScreen({ language, onEnd }) {
     };
   }, [language]);
 
-  async function handleEnd() {
-    await endConversation();
+  function handleEnd() {
+    endConversation();
     onEnd();
   }
 
