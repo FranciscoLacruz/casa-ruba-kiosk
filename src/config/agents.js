@@ -1,18 +1,32 @@
-// ⚠️  PENDIENTE: Rellenar con los Agent IDs reales de ElevenLabs
-// Los agentes los está creando el equipo de ElevenLabs
+export const LANGUAGES = [
+  {
+    code: 'es',
+    label: 'Español',
+    agentId: 'agent_0901kjse236sfktvqhyhpzds95dm',
+  },
+  {
+    code: 'en',
+    label: 'English',
+    agentId: 'AGENT_ID_ENGLISH_HERE',
+  },
+  {
+    code: 'fr',
+    label: 'Français',
+    agentId: 'AGENT_ID_FRANCAIS_ICI',
+  },
+  // Para añadir un idioma nuevo, añade aquí una entrada y crea su clave en src/i18n/ui.js
+  // { code: 'de', label: 'Deutsch', agentId: 'AGENT_ID_DEUTSCH_AQUI' },
+];
 
-export const ELEVENLABS_AGENTS = {
-  es: 'agent_0901kjse236sfktvqhyhpzds95dm',
-  en: 'AGENT_ID_ENGLISH_HERE',
-  fr: 'AGENT_ID_FRANCAIS_ICI',
-};
+const PLACEHOLDER_AGENT_IDS = ['AGENT_ID_ENGLISH_HERE', 'AGENT_ID_FRANCAIS_ICI'];
 
-// ⚠️  PENDIENTE: Rellenar con el teléfono real del Hotel Tierra de Biescas
-export const HOTEL_TIERRA_PHONE = '+34 974 XXX XXX';
+export const PLACEHOLDER_IDS = LANGUAGES
+  .map((l) => l.agentId)
+  .filter((id) => PLACEHOLDER_AGENT_IDS.includes(id));
 
+export function getAgentId(langCode) {
+  return LANGUAGES.find((l) => l.code === langCode)?.agentId ?? null;
+}
+
+export const HOTEL_TIERRA_PHONE = '+34 974 48 54 83';
 export const IDLE_TIMEOUT_SECONDS = 120;
-
-// IDs que se consideran placeholders (no configurados aún)
-export const PLACEHOLDER_IDS = Object.values(ELEVENLABS_AGENTS).filter((id) =>
-  ['AGENT_ID_ESPAÑOL_AQUI', 'AGENT_ID_ENGLISH_HERE', 'AGENT_ID_FRANCAIS_ICI'].includes(id)
-);

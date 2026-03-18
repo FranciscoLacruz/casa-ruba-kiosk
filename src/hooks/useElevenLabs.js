@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { Conversation } from '@elevenlabs/client';
-import { PLACEHOLDER_IDS } from '../config/agents';
+import { PLACEHOLDER_IDS, getAgentId } from '../config/agents';
 
 export const ConversationStatus = {
   IDLE: 'IDLE',

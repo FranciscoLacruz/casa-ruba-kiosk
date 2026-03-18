@@ -31,7 +31,7 @@ export default function LanguageScreen({ onSelectLanguage, onBack }) {
             marginBottom: '0.75rem',
           }}
         >
-          Casa Ruba · Biescas
+          La Posada de Ruba · Biescas
         </p>
         <h2
           style={{

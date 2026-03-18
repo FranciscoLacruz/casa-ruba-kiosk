@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import IdleScreen from './screens/IdleScreen';
 import LanguageScreen from './screens/LanguageScreen';
 import ConversationScreen from './screens/ConversationScreen';
@@ -13,7 +13,7 @@ const SCREENS = {
 export default function App() {
   const [screen, setScreen] = useState(SCREENS.IDLE);
   const [language, setLanguage] = useState('es');
-  const idleTimerRef = { current: null };
+  const idleTimerRef = useRef(null);
 
   const irAIdle = useCallback(() => {
     setScreen(SCREENS.IDLE);
@@ -26,13 +26,11 @@ export default function App() {
     }
   }, [screen, irAIdle]);
 
-  // Reiniciar timer en cada actividad del usuario
   useEffect(() => {
     if (screen === SCREENS.IDLE) return;
 
     const eventos = ['touchstart', 'touchmove', 'mousedown', 'mousemove', 'keydown'];
     eventos.forEach((e) => window.addEventListener(e, resetIdleTimer, { passive: true }));
-
     resetIdleTimer();
 
     return () => {
@@ -41,29 +39,22 @@ export default function App() {
     };
   }, [screen, resetIdleTimer]);
 
-  function handleTouchIdle() {
-    setScreen(SCREENS.LANGUAGE);
-  }
-
-  function handleSelectLanguage(lang) {
-    setLanguage(lang);
-    setScreen(SCREENS.CONVERSATION);
-  }
-
-  function handleEndConversation() {
-    setScreen(SCREENS.IDLE);
-  }
-
   return (
     <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', background: '#000' }}>
       {screen === SCREENS.IDLE && (
-        <IdleScreen onTouch={handleTouchIdle} />
+        <IdleScreen onTouch={() => setScreen(SCREENS.LANGUAGE)} />
       )}
       {screen === SCREENS.LANGUAGE && (
-        <LanguageScreen onSelectLanguage={handleSelectLanguage} onBack={irAIdle} />
+        <LanguageScreen
+          onSelectLanguage={(lang) => {
+            setLanguage(lang);
+            setScreen(SCREENS.CONVERSATION);
+          }}
+          onBack={irAIdle}
+        />
       )}
       {screen === SCREENS.CONVERSATION && (
-        <ConversationScreen language={language} onEnd={handleEndConversation} />
+        <ConversationScreen language={language} onEnd={irAIdle} />
       )}
     </div>
   );

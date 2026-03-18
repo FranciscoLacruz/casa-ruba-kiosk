@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useElevenLabs, ConversationStatus } from '../hooks/useElevenLabs';
-import { ELEVENLABS_AGENTS, HOTEL_TIERRA_PHONE } from '../config/agents';
+import { getAgentId, HOTEL_TIERRA_PHONE } from '../config/agents';
 import { UI_TEXTS } from '../i18n/ui';
 
 export default function ConversationScreen({ language, onEnd }) {
@@ -8,7 +8,7 @@ export default function ConversationScreen({ language, onEnd }) {
   const { status, errorMessage, startConversation, endConversation } = useElevenLabs();
 
   useEffect(() => {
-    const agentId = ELEVENLABS_AGENTS[language];
+    const agentId = getAgentId(language);
     // setTimeout(0) permite que el cleanup de React Strict Mode cancele
     // este inicio antes de que llegue a ejecutarse, evitando doble sesión.
     startConversation(agentId);
@@ -58,7 +58,7 @@ export default function ConversationScreen({ language, onEnd }) {
             textTransform: 'uppercase',
           }}
         >
-          Casa Ruba · {t.convTitle}
+          La Posada de Ruba · {t.convTitle}
         </p>
       </div>
 
@@ -184,7 +184,7 @@ export default function ConversationScreen({ language, onEnd }) {
         {/* Botón retry en error */}
         {isError && (
           <button
-            onClick={() => startConversation(ELEVENLABS_AGENTS[language])}
+            onClick={() => startConversation(getAgentId(language))}
             style={{
               background: 'transparent',
               border: '1px solid rgba(200,169,110,0.4)',

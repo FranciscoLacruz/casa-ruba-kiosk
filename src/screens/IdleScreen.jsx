@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { LANGUAGES } from '../config/agents';
+import { UI_TEXTS } from '../i18n/ui';
 
-export default function IdleScreen({ onTouch }) {
+export default function IdleScreen({ onTouch  }) {
   const canvasRef = useRef(null);
   const animRef = useRef(null);
   const particlesRef = useRef([]);
@@ -16,7 +18,6 @@ export default function IdleScreen({ onTouch }) {
     resize();
     window.addEventListener('resize', resize);
 
-    // Inicializar partículas doradas
     const N = 60;
     particlesRef.current = Array.from({ length: N }, () => ({
       x: Math.random() * canvas.width,
@@ -33,7 +34,6 @@ export default function IdleScreen({ onTouch }) {
       particlesRef.current.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-
         if (p.x < 0) p.x = canvas.width;
         if (p.x > canvas.width) p.x = 0;
         if (p.y < 0) p.y = canvas.height;
@@ -45,7 +45,6 @@ export default function IdleScreen({ onTouch }) {
         ctx.fill();
       });
 
-      // Dibujar líneas entre partículas cercanas
       const ps = particlesRef.current;
       for (let i = 0; i < ps.length; i++) {
         for (let j = i + 1; j < ps.length; j++) {
@@ -89,17 +88,11 @@ export default function IdleScreen({ onTouch }) {
         cursor: 'pointer',
       }}
     >
-      {/* Canvas de partículas */}
       <canvas
         ref={canvasRef}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          pointerEvents: 'none',
-        }}
+        style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
       />
 
-      {/* Contenido central */}
       <div
         style={{
           position: 'relative',
@@ -112,73 +105,75 @@ export default function IdleScreen({ onTouch }) {
         }}
       >
         {/* Línea decorativa */}
-        <div
-          style={{
-            width: '60px',
-            height: '1px',
-            background: 'linear-gradient(to right, transparent, #c8a96e, transparent)',
-            marginBottom: '0.5rem',
-          }}
-        />
+        <div style={{
+          width: '60px',
+          height: '1px',
+          background: 'linear-gradient(to right, transparent, #c8a96e, transparent)',
+          marginBottom: '0.5rem',
+        }} />
 
         {/* Título */}
-        <h1
-          style={{
-            fontFamily: 'Georgia, serif',
-            fontSize: '4.5rem',
-            fontWeight: '400',
-            color: '#c8a96e',
-            letterSpacing: '0.15em',
-            textShadow: '0 0 40px rgba(200,169,110,0.3)',
-            lineHeight: 1,
-          }}
-        >
-          Casa Ruba
+        <h1 style={{
+          fontFamily: 'Georgia, serif',
+          fontSize: '4.5rem',
+          fontWeight: '400',
+          color: '#c8a96e',
+          letterSpacing: '0.15em',
+          textShadow: '0 0 40px rgba(200,169,110,0.3)',
+          lineHeight: 1,
+        }}>
+          La Posada de Ruba
         </h1>
 
         {/* Subtítulo */}
-        <p
-          style={{
-            fontFamily: 'Georgia, serif',
-            fontSize: '1.1rem',
-            fontWeight: '400',
-            color: 'rgba(200,169,110,0.6)',
-            letterSpacing: '0.4em',
-            textTransform: 'uppercase',
-          }}
-        >
-          Hotel · Biescas
+        <p style={{
+          fontFamily: 'Georgia, serif',
+          fontSize: '1.05rem',
+          color: 'rgba(200,169,110,0.6)',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+        }}>
+          Tu recepcionista virtual · Disponible 24h
         </p>
 
         {/* Línea decorativa */}
-        <div
-          style={{
-            width: '60px',
-            height: '1px',
-            background: 'linear-gradient(to right, transparent, #c8a96e, transparent)',
-            marginTop: '0.5rem',
-            marginBottom: '2rem',
-          }}
-        />
+        <div style={{
+          width: '60px',
+          height: '1px',
+          background: 'linear-gradient(to right, transparent, #c8a96e, transparent)',
+          margin: '1rem 0 2rem',
+        }} />
 
-        {/* CTA pulsante */}
-        <p
-          style={{
-            fontFamily: 'Georgia, serif',
-            fontSize: '1.25rem',
-            color: 'rgba(255,255,255,0.5)',
-            letterSpacing: '0.1em',
-            animation: 'pulse 2.5s ease-in-out infinite',
-          }}
-        >
-          Toca para comenzar
-        </p>
+        {/* CTAs en los 3 idiomas — decorativos, pulso escalonado */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.15rem',
+        }}>
+          {LANGUAGES.map((lang, index) => (
+            <p
+              key={lang.code}
+              style={{
+                fontFamily: 'Georgia, serif',
+                fontSize: index === 0 ? '1.25rem' : '1rem',
+                color: index === 0 ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.28)',
+                letterSpacing: '0.1em',
+                padding: '0.3rem 0',
+                animation: 'pulse 2.5s ease-in-out infinite',
+                animationDelay: `${index * 0.5}s`,
+              }}
+            >
+              {UI_TEXTS[lang.code].idleCta}
+            </p>
+          ))}
+        </div>
       </div>
 
       <style>{`
         @keyframes pulse {
-          0%, 100% { opacity: 0.4; }
-          50% { opacity: 1; }
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.8; }
         }
       `}</style>
     </div>
