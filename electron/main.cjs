@@ -126,6 +126,9 @@ function programarAutoUpdate() {
     }, ms);
   }
 
+  // TODO: quitar tras verificar auto-update en el Alurin
+  autoUpdater.checkForUpdates().catch(console.error);
+
   programarSiguienteCheck();
 }
 
