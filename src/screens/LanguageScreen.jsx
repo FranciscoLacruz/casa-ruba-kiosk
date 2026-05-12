@@ -1,7 +1,32 @@
+const FLAGS = {
+  es: (
+    <svg viewBox="0 0 60 40" width="60" height="40">
+      <rect width="60" height="40" fill="#c60b1e"/>
+      <rect y="10" width="60" height="20" fill="#ffc400"/>
+    </svg>
+  ),
+  en: (
+    <svg viewBox="0 0 60 40" width="60" height="40">
+      <rect width="60" height="40" fill="#012169"/>
+      <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" strokeWidth="6"/>
+      <path d="M0,0 L60,40 M60,0 L0,40" stroke="#c8102e" strokeWidth="4"/>
+      <path d="M30,0 V40 M0,20 H60" stroke="#fff" strokeWidth="8"/>
+      <path d="M30,0 V40 M0,20 H60" stroke="#c8102e" strokeWidth="5"/>
+    </svg>
+  ),
+  fr: (
+    <svg viewBox="0 0 60 40" width="60" height="40">
+      <rect width="20" height="40" fill="#002395"/>
+      <rect x="20" width="20" height="40" fill="#fff"/>
+      <rect x="40" width="20" height="40" fill="#ed2939"/>
+    </svg>
+  ),
+};
+
 const LANGUAGES = [
-  { code: 'es', label: 'Español', flag: '🇪🇸', sub: 'Español' },
-  { code: 'en', label: 'English', flag: '🇬🇧', sub: 'English' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷', sub: 'Français' },
+  { code: 'es', label: 'Español' },
+  { code: 'en', label: 'English' },
+  { code: 'fr', label: 'Français' },
 ];
 
 export default function LanguageScreen({ onSelectLanguage, onBack }) {
@@ -66,7 +91,7 @@ export default function LanguageScreen({ onSelectLanguage, onBack }) {
           justifyContent: 'center',
         }}
       >
-        {LANGUAGES.map(({ code, label, flag }) => (
+        {LANGUAGES.map(({ code, label }) => (
           <button
             key={code}
             onClick={() => onSelectLanguage(code)}
@@ -97,7 +122,7 @@ export default function LanguageScreen({ onSelectLanguage, onBack }) {
               e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            <span style={{ fontSize: '3.5rem', lineHeight: 1 }}>{flag}</span>
+            <div style={{ lineHeight: 1 }}>{FLAGS[code]}</div>
             <span
               style={{
                 fontSize: '1.4rem',

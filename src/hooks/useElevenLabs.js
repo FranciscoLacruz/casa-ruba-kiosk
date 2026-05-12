@@ -57,8 +57,8 @@ export function useElevenLabs() {
         agentId,
         connectionType: 'websocket',
         workletPaths: {
-          rawAudioProcessor: '/worklets/rawAudioProcessor.js',
-          audioConcatProcessor: '/worklets/audioConcatProcessor.js',
+          rawAudioProcessor: `${import.meta.env.BASE_URL}worklets/rawAudioProcessor.js`,
+          audioConcatProcessor: `${import.meta.env.BASE_URL}worklets/audioConcatProcessor.js`,
         },
         onConnect: () => {
           setStatus(ConversationStatus.LISTENING);
