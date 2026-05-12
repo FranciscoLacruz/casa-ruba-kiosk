@@ -12,6 +12,11 @@ export const ConversationStatus = {
 
 const IS_MOCK = import.meta.env.VITE_MOCK_ELEVENLABS === 'true';
 
+function klog(msg) {
+  console.log('[ElevenLabs]', msg);
+  if (window.electron?.log) window.electron.log('ElevenLabs', msg);
+}
+
 export function useElevenLabs() {
   const [status, setStatus] = useState(ConversationStatus.IDLE);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -29,6 +34,7 @@ export function useElevenLabs() {
 
     setStatus(ConversationStatus.CONNECTING);
     setErrorMessage(null);
+    klog(`Iniciando conexión con agentId=${agentId} mock=${IS_MOCK}`);
 
     if (IS_MOCK) {
       // Simular ciclo completo sin llamar a ElevenLabs
@@ -56,15 +62,12 @@ export function useElevenLabs() {
       const conversation = await Conversation.startSession({
         agentId,
         connectionType: 'websocket',
-        workletPaths: {
-          rawAudioProcessor: `${import.meta.env.BASE_URL}worklets/rawAudioProcessor.js`,
-          audioConcatProcessor: `${import.meta.env.BASE_URL}worklets/audioConcatProcessor.js`,
-        },
         onConnect: () => {
+          klog('Conectado');
           setStatus(ConversationStatus.LISTENING);
         },
         onDisconnect: (details) => {
-          console.log('[ElevenLabs] onDisconnect:', JSON.stringify(details));
+          klog(`Desconectado: ${JSON.stringify(details)}`);
           if (details?.reason === 'error') {
             setErrorMessage('convError');
             setStatus(ConversationStatus.ERROR);
@@ -74,7 +77,7 @@ export function useElevenLabs() {
           conversationRef.current = null;
         },
         onError: (message, context) => {
-          console.error('[ElevenLabs] onError:', message, JSON.stringify(context));
+          klog(`Error: ${message} ${JSON.stringify(context)}`);
           setErrorMessage('convError');
           setStatus(ConversationStatus.ERROR);
           conversationRef.current = null;
@@ -90,7 +93,7 @@ export function useElevenLabs() {
 
       conversationRef.current = conversation;
     } catch (err) {
-      console.error('[ElevenLabs] startSession error:', err);
+      klog(`startSession error: ${err.message || err}`);
       setErrorMessage('convError');
       setStatus(ConversationStatus.ERROR);
     }

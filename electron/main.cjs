@@ -1,9 +1,24 @@
-const { app, BrowserWindow, globalShortcut, session } = require('electron');
+const { app, BrowserWindow, globalShortcut, session, ipcMain } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const { autoUpdater } = require('electron-updater');
 
 const isDev = !app.isPackaged;
 let mainWindow = null;
+
+// ─── Logging a fichero ─────────────────────────────────────────────────────
+
+const logDir = path.join(app.getPath('userData'), 'logs');
+const logFile = path.join(logDir, 'kiosk.log');
+
+function log(tag, ...args) {
+  const line = `[${new Date().toISOString()}] [${tag}] ${args.join(' ')}`;
+  console.log(line);
+  try {
+    if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
+    fs.appendFileSync(logFile, line + '\n');
+  } catch (_) {}
+}
 
 // ─── Creación de ventana ────────────────────────────────────────────────────
 
@@ -30,7 +45,6 @@ function createWindow() {
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
   }
 
-  // Watchdog: en producción, relanzar si la ventana se cierra inesperadamente
   mainWindow.on('closed', () => {
     mainWindow = null;
     if (!isDev) {
@@ -42,22 +56,8 @@ function createWindow() {
 // ─── Permisos de micrófono ──────────────────────────────────────────────────
 
 app.whenReady().then(() => {
-  // CSP gestionada aquí para que funcione tanto con http:// (dev) como file:// (prod)
-  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Content-Security-Policy': [
-          "default-src 'self' file: data:; " +
-          "connect-src 'self' https://*.elevenlabs.io wss://*.elevenlabs.io; " +
-          "media-src 'self' blob: https://*.elevenlabs.io; " +
-          "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: file:; " +
-          "style-src 'self' 'unsafe-inline'; " +
-          "worker-src 'self' blob: file:;"
-        ],
-      },
-    });
-  });
+  log('App', 'Inicio', isDev ? '(dev)' : '(prod)', `v${app.getVersion()}`);
+  log('App', 'Logs en:', logFile);
 
   session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
     if (permission === 'media' || permission === 'microphone') {
@@ -75,6 +75,12 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
+
+// ─── IPC: logging desde renderer ────────────────────────────────────────────
+
+ipcMain.handle('get-version', () => app.getVersion());
+ipcMain.handle('get-log-path', () => logFile);
+ipcMain.on('log', (_, tag, message) => log(tag, message));
 
 // ─── Bloqueo de teclas en producción ───────────────────────────────────────
 
@@ -112,13 +118,29 @@ function programarAutoUpdate() {
   autoUpdater.autoDownload = true;
   autoUpdater.autoInstallOnAppQuit = false;
 
-  autoUpdater.on('update-downloaded', () => {
-    // Instalar y reiniciar silenciosamente
+  autoUpdater.on('checking-for-update', () => {
+    log('AutoUpdater', 'Comprobando actualizaciones...');
+  });
+
+  autoUpdater.on('update-available', (info) => {
+    log('AutoUpdater', `Update disponible: v${info.version}`);
+  });
+
+  autoUpdater.on('update-not-available', () => {
+    log('AutoUpdater', 'No hay actualizaciones nuevas');
+  });
+
+  autoUpdater.on('download-progress', (progress) => {
+    log('AutoUpdater', `Descargando: ${Math.round(progress.percent)}%`);
+  });
+
+  autoUpdater.on('update-downloaded', (info) => {
+    log('AutoUpdater', `Descargada v${info.version}, instalando...`);
     autoUpdater.quitAndInstall(true, true);
   });
 
   autoUpdater.on('error', (err) => {
-    console.error('[AutoUpdater] Error:', err.message);
+    log('AutoUpdater', `Error: ${err.message}`);
   });
 
   function calcularMsHasta3AM() {
@@ -133,17 +155,14 @@ function programarAutoUpdate() {
 
   function programarSiguienteCheck() {
     const ms = calcularMsHasta3AM();
+    log('AutoUpdater', `Próximo check en ${Math.round(ms / 60000)} min (3:00 AM)`);
     setTimeout(() => {
-      autoUpdater.checkForUpdates().catch(console.error);
-      // Repetir cada 24h
+      autoUpdater.checkForUpdates().catch((e) => log('AutoUpdater', `Error check: ${e.message}`));
       setInterval(() => {
-        autoUpdater.checkForUpdates().catch(console.error);
+        autoUpdater.checkForUpdates().catch((e) => log('AutoUpdater', `Error check: ${e.message}`));
       }, 24 * 60 * 60 * 1000);
     }, ms);
   }
-
-  // TODO: quitar tras verificar auto-update en el Alurin
-  autoUpdater.checkForUpdates().catch(console.error);
 
   programarSiguienteCheck();
 }
@@ -151,7 +170,6 @@ function programarAutoUpdate() {
 // ─── Cierre limpio ──────────────────────────────────────────────────────────
 
 app.on('window-all-closed', () => {
-  // En producción el watchdog relanza la ventana; aquí solo salimos si isDev
   if (isDev || process.platform !== 'darwin') {
     globalShortcut.unregisterAll();
     app.quit();
