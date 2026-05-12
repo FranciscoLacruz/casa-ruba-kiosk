@@ -164,6 +164,11 @@ function programarAutoUpdate() {
     }, ms);
   }
 
+  // Check inmediato al arrancar (con pequeño delay para que la ventana cargue)
+  setTimeout(() => {
+    autoUpdater.checkForUpdates().catch((e) => log('AutoUpdater', `Error check inicial: ${e.message}`));
+  }, 5000);
+
   programarSiguienteCheck();
 }
 

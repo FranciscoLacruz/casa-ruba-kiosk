@@ -176,7 +176,7 @@ export default function IdleScreen({ onTouch  }) {
         right: '1rem',
         fontFamily: 'Georgia, serif',
         fontSize: '0.65rem',
-        color: 'rgba(255,255,255,0.12)',
+        color: 'rgba(255,255,255,0.3)',
         letterSpacing: '0.05em',
       }}>
         v{__APP_VERSION__}
