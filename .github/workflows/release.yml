@@ -2,8 +2,8 @@ name: Build & Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -19,14 +19,35 @@ jobs:
           node-version: 20
           cache: npm
 
-      - run: npm ci
+      - name: Get version from package.json
+        id: version
+        shell: bash
+        run: echo "version=v$(node -p \"require('./package.json').version\")" >> "$GITHUB_OUTPUT"
 
-      - run: npm run build:win
+      - name: Check if tag already exists
+        id: check_tag
+        shell: bash
+        run: |
+          if git ls-remote --tags origin "${{ steps.version.outputs.version }}" | grep -q .; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build Windows installer
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          npm ci
+          npm run build:win
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: softprops/action-gh-release@v2
+      - name: Create Release
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: ${{ steps.version.outputs.version }}
           files: |
             release/*.exe
             release/*.yml
