@@ -1,6 +1,6 @@
 {
   "name": "casa-ruba-kiosk",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Recepción virtual para Casa Ruba Hotel, Biescas (Huesca)",
   "type": "module",
   "main": "electron/main.cjs",
@@ -50,6 +50,7 @@
       ],
       "icon": "public/assets/icon.ico"
     },
+    "artifactName": "${name}-Setup-${version}.${ext}",
     "nsis": {
       "oneClick": true,
       "perMachine": true,
