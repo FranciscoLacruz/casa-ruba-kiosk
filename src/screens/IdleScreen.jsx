@@ -170,6 +170,18 @@ export default function IdleScreen({ onTouch  }) {
         </div>
       </div>
 
+      <p style={{
+        position: 'absolute',
+        bottom: '0.75rem',
+        right: '1rem',
+        fontFamily: 'Georgia, serif',
+        fontSize: '0.65rem',
+        color: 'rgba(255,255,255,0.12)',
+        letterSpacing: '0.05em',
+      }}>
+        v{__APP_VERSION__}
+      </p>
+
       <style>{`
         @keyframes pulse {
           0%, 100% { opacity: 0.3; }
