@@ -42,8 +42,24 @@ function createWindow() {
 // ─── Permisos de micrófono ──────────────────────────────────────────────────
 
 app.whenReady().then(() => {
+  // CSP gestionada aquí para que funcione tanto con http:// (dev) como file:// (prod)
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [
+          "default-src 'self' file: data:; " +
+          "connect-src 'self' https://*.elevenlabs.io wss://*.elevenlabs.io; " +
+          "media-src 'self' blob: https://*.elevenlabs.io; " +
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: file:; " +
+          "style-src 'self' 'unsafe-inline'; " +
+          "worker-src 'self' blob: file:;"
+        ],
+      },
+    });
+  });
+
   session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
-    // Permitir acceso al micrófono para ElevenLabs
     if (permission === 'media' || permission === 'microphone') {
       callback(true);
     } else {
