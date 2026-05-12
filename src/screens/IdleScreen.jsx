@@ -79,7 +79,7 @@ export default function IdleScreen({ onTouch  }) {
       style={{
         width: '100vw',
         height: '100vh',
-        background: 'radial-gradient(ellipse at center, #1a0a2e 0%, #0d0033 100%)',
+        background: 'radial-gradient(ellipse at center, #0a2e1a 0%, #003310 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
