@@ -59,8 +59,8 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "OWNER_AQUI",
-      "repo": "REPO_AQUI"
+      "owner": "FranciscoLacruz",
+      "repo": "casa-ruba-kiosk"
     }
   }
 }

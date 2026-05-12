@@ -2,7 +2,7 @@ export const LANGUAGES = [
   {
     code: 'es',
     label: 'Español',
-    agentId: 'agent_0901kjse236sfktvqhyhpzds95dm',
+    agentId: 'agent_5201kmdtr1jme2sbbe2ygqtm8shp',
   },
   {
     code: 'en',
