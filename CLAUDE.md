@@ -79,19 +79,18 @@ casa-ruba-kiosk/
 ## Configuración crítica: agents.js
 
 ```js
-// src/config/agents.js
-export const ELEVENLABS_AGENTS = {
-  es: 'AGENT_ID_ESPAÑOL_AQUI',   // ← pendiente de los agentes en ElevenLabs
-  en: 'AGENT_ID_ENGLISH_HERE',
-  fr: 'AGENT_ID_FRANCAIS_ICI',
-};
+// src/config/agents.js — estructura LANGUAGES
+{ code: 'es', label: 'Español', agentId: '...' },
+{ code: 'en', label: 'English', agentId: '...' },
+{ code: 'fr', label: 'Français', agentId: '...' },
 
-export const HOTEL_TIERRA_PHONE = '+34 974 XXX XXX'; // ← rellenar
-export const IDLE_TIMEOUT_SECONDS = 120;
+export const HOTEL_TIERRA_PHONE = '+34 974 48 54 83';
+export const IDLE_TIMEOUT_SECONDS = 120;    // Inactividad de pantalla → vuelve a IDLE
+export const MAX_CONVERSATION_SECONDS = 600; // Tope absoluto de conversación (10 min)
 ```
 
-**Los Agent IDs están pendientes**. Los agentes los está creando otro equipo en ElevenLabs.
-Mientras tanto, el hook `useElevenLabs.js` detecta si el ID es un placeholder y lanza error controlado.
+Los 3 agentes (ES, EN, FR) están configurados con IDs reales de ElevenLabs.
+El hook `useElevenLabs.js` detecta si un ID es placeholder y lanza error controlado (útil si se añaden idiomas nuevos).
 
 ---
 
@@ -121,13 +120,28 @@ En producción, abre en modo kiosk fullscreen y bloquea Alt+F4, Ctrl+W, F5, Esca
 
 ---
 
-## Auto-update
+## Auto-update y proceso de releases
 
-- Usa `electron-updater` apuntando a **GitHub Releases** (sin infraestructura propia)
+### Cómo se actualiza el kiosk en producción
+- Usa `electron-updater` apuntando a **GitHub Releases**
 - Comprueba updates cada noche a las **3:00 AM**
 - Si hay update disponible: descarga e instala automáticamente, reinicia el proceso
-- Para publicar una versión: incrementar versión en `package.json` → `npm run build:win` → crear GitHub Release con los artefactos de `dist/`
-- Configurar `publish.owner` y `publish.repo` en `package.json` con los datos reales del repo
+
+### Cómo publicar una nueva versión
+
+El proceso es automático vía GitHub Actions (`.github/workflows/release.yml`):
+
+1. Incrementar la versión en `package.json` (campo `"version"`)
+2. Hacer commit y push a `main`
+3. El workflow se encarga del resto:
+   - Lee la versión de `package.json`
+   - Comprueba si el tag ya existe (no duplica releases)
+   - Si es versión nueva: ejecuta `npm ci` + `npm run build:win` en `windows-latest`
+   - Crea la GitHub Release con el `.exe` y los archivos de auto-update (`*.yml`)
+   - Los artefactos se publican en `release/`
+4. El kiosk en producción lo detecta en su chequeo de las 3:00 AM y se actualiza solo
+
+**Importante**: No hace falta hacer build local ni crear la release manualmente. Solo incrementar versión, commit y push.
 
 ---
 
@@ -144,18 +158,13 @@ En producción, abre en modo kiosk fullscreen y bloquea Alt+F4, Ctrl+W, F5, Esca
 
 ## Tareas pendientes (estado del proyecto)
 
-### Bloqueado esperando Agent IDs de ElevenLabs
-- [ ] Rellenar `ELEVENLABS_AGENTS` en `src/config/agents.js`
-- [ ] Rellenar `HOTEL_TIERRA_PHONE` en `src/config/agents.js`
-
-### Por implementar
-- [ ] Instalar dependencias (`npm install`) y verificar que arranca en dev
+### Por hacer
 - [ ] Añadir icono de la app (`public/assets/icon.ico`) para el build de Windows
-- [ ] Test de integración con ElevenLabs SDK cuando lleguen los Agent IDs
 - [ ] Ajuste fino de la UI en pantalla táctil real (tamaños de botón, fuentes)
-- [ ] Configurar `publish.owner` y `publish.repo` en `package.json`
 - [ ] Configurar Windows 11 kiosk mode en el Alurin apuntando al ejecutable
 - [ ] Habilitar RDP en el Alurin para gestión remota desde Bilbao
+- [ ] Testear protecciones de sesión (ver TESTING.md) cuando se upgrade el plan de ElevenLabs
+- [ ] Configurar `max_duration_seconds` en los agentes de ElevenLabs (servidor)
 
 ### Mejoras futuras (no prioritarias)
 - [ ] Integración con PMS para recuperar códigos de acceso directamente

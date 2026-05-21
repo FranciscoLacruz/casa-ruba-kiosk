@@ -1,22 +1,41 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useElevenLabs, ConversationStatus } from '../hooks/useElevenLabs';
-import { getAgentId, HOTEL_TIERRA_PHONE } from '../config/agents';
+import { getAgentId, HOTEL_TIERRA_PHONE, MAX_CONVERSATION_SECONDS } from '../config/agents';
 import { UI_TEXTS } from '../i18n/ui';
 
-export default function ConversationScreen({ language, onEnd }) {
+export default function ConversationScreen({ language, onEnd, onActivity }) {
   const t = UI_TEXTS[language] || UI_TEXTS.es;
   const { status, errorMessage, startConversation, endConversation } = useElevenLabs();
+  const wasActiveRef = useRef(false);
+  const maxTimerRef = useRef(null);
 
   useEffect(() => {
     const agentId = getAgentId(language);
-    // setTimeout(0) permite que el cleanup de React Strict Mode cancele
-    // este inicio antes de que llegue a ejecutarse, evitando doble sesión.
     startConversation(agentId);
 
+    maxTimerRef.current = setTimeout(() => {
+      endConversation();
+      onEnd();
+    }, MAX_CONVERSATION_SECONDS * 1000);
+
     return () => {
+      clearTimeout(maxTimerRef.current);
       endConversation();
     };
   }, [language]);
+
+  useEffect(() => {
+    const isActive = status === ConversationStatus.LISTENING || status === ConversationStatus.SPEAKING;
+
+    if (isActive) {
+      wasActiveRef.current = true;
+      onActivity?.();
+    }
+
+    if (status === ConversationStatus.IDLE && wasActiveRef.current) {
+      onEnd();
+    }
+  }, [status]);
 
   function handleEnd() {
     endConversation();

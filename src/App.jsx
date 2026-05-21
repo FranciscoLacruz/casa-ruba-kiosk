@@ -54,7 +54,7 @@ export default function App() {
         />
       )}
       {screen === SCREENS.CONVERSATION && (
-        <ConversationScreen language={language} onEnd={irAIdle} />
+        <ConversationScreen language={language} onEnd={irAIdle} onActivity={resetIdleTimer} />
       )}
     </div>
   );
