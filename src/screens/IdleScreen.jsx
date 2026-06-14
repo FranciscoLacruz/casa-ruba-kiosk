@@ -81,7 +81,7 @@ export default function IdleScreen({ onSelectLanguage }) {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -60%)',
-          height: '280px',
+          height: '420px',
           width: 'auto',
           zIndex: 1,
         }}

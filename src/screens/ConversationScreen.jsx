@@ -95,9 +95,9 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
         alt="RUBA"
         style={{
           position: 'absolute',
-          top: '1.5rem',
-          left: '1.5rem',
-          height: '180px',
+          top: '2rem',
+          left: '2rem',
+          height: '240px',
           width: 'auto',
           zIndex: 2,
         }}
@@ -109,9 +109,9 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
         alt="LCR"
         style={{
           position: 'absolute',
-          top: '-3rem',
-          right: '1.5rem',
-          height: '300px',
+          top: '-4.5rem',
+          right: '2rem',
+          height: '400px',
           width: 'auto',
           zIndex: 2,
         }}
@@ -262,13 +262,13 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
       <div
         style={{
           position: 'absolute',
-          bottom: '2rem',
+          bottom: '1rem',
           left: 0,
           right: 0,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '1rem',
+          gap: '0.75rem',
           zIndex: 2,
         }}
       >
@@ -298,14 +298,25 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
         <p
           style={{
             fontFamily: 'Georgia, serif',
-            fontSize: '0.85rem',
+            fontSize: '1.7rem',
             color: 'rgba(255,255,255,0.5)',
             textAlign: 'center',
-            maxWidth: '500px',
+            whiteSpace: 'nowrap',
             lineHeight: 1.4,
           }}
         >
-          {t.convPhoneHint} <span style={{ color: 'rgba(255,255,255,0.75)', fontWeight: '600' }}>{HOTEL_TIERRA_PHONE}</span>
+          {t.convPhoneHint}
+        </p>
+        <p
+          style={{
+            fontFamily: 'Georgia, serif',
+            fontSize: '2.2rem',
+            color: 'rgba(255,255,255,0.8)',
+            fontWeight: '700',
+            letterSpacing: '0.05em',
+          }}
+        >
+          {HOTEL_TIERRA_PHONE}
         </p>
       </div>
 

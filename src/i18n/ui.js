@@ -9,7 +9,7 @@ export const UI_TEXTS = {
     convErrorPlaceholder: 'El servicio de voz aún no está configurado.',
     convRetry: 'Reintentar',
     convEnd: 'Finalizar',
-    convPhoneHint: 'Si no consigues resolver tus dudas, puedes llamar al Hotel Tierra de Biescas:',
+    convPhoneHint: 'Si no consigues resolver tus dudas, llama al Hotel Tierra de Biescas:',
   },
 
   en: {
@@ -22,7 +22,7 @@ export const UI_TEXTS = {
     convErrorPlaceholder: 'Voice service is not yet configured.',
     convRetry: 'Retry',
     convEnd: 'End',
-    convPhoneHint: 'If you can\'t resolve your questions, you can call Hotel Tierra de Biescas:',
+    convPhoneHint: 'If you can\'t resolve your questions, please call Hotel Tierra de Biescas:',
   },
 
   fr: {
@@ -35,6 +35,6 @@ export const UI_TEXTS = {
     convErrorPlaceholder: 'Le service vocal n\'est pas encore configuré.',
     convRetry: 'Réessayer',
     convEnd: 'Terminer',
-    convPhoneHint: 'Si vous ne parvenez pas à résoudre vos questions, appelez l\'Hotel Tierra de Biescas :',
+    convPhoneHint: 'Si vous ne parvenez pas à résoudre vos questions, veuillez appeler l\'Hotel Tierra de Biescas :',
   },
 };
