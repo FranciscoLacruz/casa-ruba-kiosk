@@ -46,9 +46,9 @@ casa-ruba-kiosk/
 │   ├── App.jsx           # Router de pantallas + idle timeout (120s)
 │   ├── main.jsx          # Entry point React
 │   ├── index.css         # Reset global
+│   ├── assets/                   # PNGs: wallpaper, logos, banderas, botones
 │   ├── screens/
-│   │   ├── IdleScreen.jsx        # Screensaver con partículas, "toca para comenzar"
-│   │   ├── LanguageScreen.jsx    # Selección ES / EN / FR
+│   │   ├── IdleScreen.jsx        # Wallpaper + logos + selección de idioma (FR/ES/EN)
 │   │   └── ConversationScreen.jsx # Interfaz de voz: orbe animado + waveform + controles
 │   ├── hooks/
 │   │   └── useElevenLabs.js      # Hook: startConversation, endConversation, status
@@ -67,11 +67,11 @@ casa-ruba-kiosk/
 ## Flujo de pantallas
 
 ```
-[IDLE] → (toque) → [LANGUAGE] → (selección idioma) → [CONVERSATION]
-                                                            ↓
-                                         (inactividad 120s o botón Finalizar)
-                                                            ↓
-                                                         [IDLE]
+[IDLE] → (selección idioma FR/ES/EN) → [CONVERSATION]
+                                              ↓
+                               (inactividad 120s o botón Finalizar)
+                                              ↓
+                                           [IDLE]
 ```
 
 ---
@@ -152,7 +152,8 @@ El proceso es automático vía GitHub Actions (`.github/workflows/release.yml`):
 - **Sin backend propio**: toda la lógica de IA está en ElevenLabs. La app es un cliente puro.
 - **GitHub Releases como servidor de updates**: sin coste, sin infraestructura.
 - **Watchdog en Electron**: si la ventana se cierra inesperadamente en modo kiosk, se relanza automáticamente.
-- **Estética**: dark/luxury, paleta dorada (#c8a96e) sobre negro, tipografía serif (Georgia). Coherente con el carácter de establecimiento de montaña con calidez.
+- **Estética**: wallpaper de montañas como fondo, logos RUBA y LCR en esquinas, assets gráficos PNG prediseñados (botones de idioma con banderas, botón finalizar, teléfono). Paleta verde oliva (#8a8a3a) de los assets + dorada (#c8a96e) del orbe. Tipografía serif (Georgia).
+- **Selección de idioma integrada en pantalla IDLE**: eliminada la pantalla intermedia LanguageScreen; los botones de idioma (FR/ES/EN) están directamente en la primera pantalla.
 
 ---
 

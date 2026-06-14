@@ -2,6 +2,9 @@ import { useEffect, useRef } from 'react';
 import { useElevenLabs, ConversationStatus } from '../hooks/useElevenLabs';
 import { getAgentId, HOTEL_TIERRA_PHONE, MAX_CONVERSATION_SECONDS } from '../config/agents';
 import { UI_TEXTS } from '../i18n/ui';
+import wallpaper from '../assets/wallpaper.png';
+import rubaLogo from '../assets/ruba-logo.png';
+import lcrLogo from '../assets/lcr-logo.png';
 
 export default function ConversationScreen({ language, onEnd, onActivity }) {
   const t = UI_TEXTS[language] || UI_TEXTS.es;
@@ -58,38 +61,73 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
       style={{
         width: '100vw',
         height: '100vh',
-        background: 'radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '3rem 2rem',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      {/* Encabezado */}
-      <div style={{ textAlign: 'center' }}>
-        <p
-          style={{
-            fontFamily: 'Georgia, serif',
-            fontSize: '0.8rem',
-            color: 'rgba(200,169,110,0.45)',
-            letterSpacing: '0.4em',
-            textTransform: 'uppercase',
-          }}
-        >
-          La Posada de Ruba · {t.convTitle}
-        </p>
-      </div>
+      {/* Wallpaper de fondo */}
+      <img
+        src={wallpaper}
+        alt=""
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: 0,
+        }}
+      />
 
-      {/* Orbe central */}
+      {/* Overlay oscuro para contraste con el orbe */}
       <div
         style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.45)',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Logo RUBA — esquina superior izquierda */}
+      <img
+        src={rubaLogo}
+        alt="RUBA"
+        style={{
+          position: 'absolute',
+          top: '2rem',
+          left: '2rem',
+          height: '240px',
+          width: 'auto',
+          zIndex: 2,
+        }}
+      />
+
+      {/* Logo LCR — esquina superior derecha */}
+      <img
+        src={lcrLogo}
+        alt="LCR"
+        style={{
+          position: 'absolute',
+          top: '-4.5rem',
+          right: '2rem',
+          height: '400px',
+          width: 'auto',
+          zIndex: 2,
+        }}
+      />
+
+      {/* Bloque central: orbe + waveform + status */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '2.5rem',
-          flex: 1,
           justifyContent: 'center',
+          gap: '2.5rem',
+          zIndex: 1,
         }}
       >
         {/* Orbe */}
@@ -103,7 +141,6 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
             justifyContent: 'center',
           }}
         >
-          {/* Anillos externos animados */}
           {isActive && (
             <>
               <div
@@ -129,7 +166,6 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
             </>
           )}
 
-          {/* Orbe principal */}
           <div
             style={{
               width: '120px',
@@ -159,7 +195,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
           />
         </div>
 
-        {/* Waveform (barra animada según estado) */}
+        {/* Waveform */}
         {isActive && (
           <div
             style={{
@@ -222,77 +258,66 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
         )}
       </div>
 
-      {/* Controles inferiores */}
+      {/* Controles inferiores — centrados */}
       <div
         style={{
+          position: 'absolute',
+          bottom: '1rem',
+          left: 0,
+          right: 0,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '1.25rem',
-          width: '100%',
-          maxWidth: '480px',
+          gap: '0.75rem',
+          zIndex: 2,
         }}
       >
-        {/* Teléfono de recepción */}
-        <div
-          style={{
-            textAlign: 'center',
-            padding: '0.75rem 1.5rem',
-            border: '1px solid rgba(200,169,110,0.15)',
-            borderRadius: '8px',
-            width: '100%',
-          }}
-        >
-          <p
-            style={{
-              fontFamily: 'Georgia, serif',
-              fontSize: '0.75rem',
-              color: 'rgba(200,169,110,0.45)',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              marginBottom: '0.25rem',
-            }}
-          >
-            {t.convPhoneHint}
-          </p>
-          <p
-            style={{
-              fontFamily: 'Georgia, serif',
-              fontSize: '1.2rem',
-              color: 'rgba(200,169,110,0.7)',
-              letterSpacing: '0.1em',
-            }}
-          >
-            {HOTEL_TIERRA_PHONE}
-          </p>
-        </div>
-
-        {/* Botón Finalizar */}
         <button
           onClick={handleEnd}
           style={{
-            width: '100%',
-            padding: '1rem',
-            background: 'rgba(200,169,110,0.08)',
-            border: '1px solid rgba(200,169,110,0.3)',
-            borderRadius: '8px',
-            color: 'rgba(200,169,110,0.8)',
-            fontFamily: 'Georgia, serif',
-            fontSize: '1rem',
-            letterSpacing: '0.15em',
+            background: '#9a9a5a',
+            border: 'none',
+            borderRadius: '16px',
+            color: '#f0ead2',
+            fontFamily: 'Arial, Helvetica, sans-serif',
+            fontSize: '2.2rem',
+            fontWeight: '700',
+            letterSpacing: '0.05em',
+            padding: '1rem 3rem',
             cursor: 'pointer',
+            transition: 'transform 0.15s ease',
             textTransform: 'uppercase',
-            transition: 'all 0.2s',
           }}
-          onPointerDown={(e) => {
-            e.currentTarget.style.background = 'rgba(200,169,110,0.18)';
-          }}
-          onPointerUp={(e) => {
-            e.currentTarget.style.background = 'rgba(200,169,110,0.08)';
-          }}
+          onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.93)'; }}
+          onPointerUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+          onPointerLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
         >
           {t.convEnd}
         </button>
+
+        <p
+          style={{
+            fontFamily: 'Georgia, serif',
+            fontSize: '1.7rem',
+            color: 'rgba(255,255,255,0.5)',
+            textAlign: 'center',
+            whiteSpace: 'nowrap',
+            lineHeight: 1.4,
+          }}
+        >
+          {t.convPhoneHint}
+        </p>
+        <p
+          style={{
+            fontFamily: 'Georgia, serif',
+            fontSize: '2.2rem',
+            color: 'rgba(255,255,255,0.8)',
+            fontWeight: '700',
+            letterSpacing: '0.05em',
+          }}
+        >
+          {HOTEL_TIERRA_PHONE}
+        </p>
       </div>
 
       <style>{`
