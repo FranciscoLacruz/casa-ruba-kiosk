@@ -15,7 +15,7 @@ const flagButtonStyle = {
 };
 
 const flagImgStyle = {
-  height: '120px',
+  height: '210px',
   width: 'auto',
   pointerEvents: 'none',
 };
@@ -52,7 +52,7 @@ export default function IdleScreen({ onSelectLanguage }) {
           position: 'absolute',
           top: '2rem',
           left: '2rem',
-          height: '240px',
+          height: '480px',
           width: 'auto',
           zIndex: 1,
         }}
@@ -64,9 +64,9 @@ export default function IdleScreen({ onSelectLanguage }) {
         alt="LCR Hoteles y Apartamentos"
         style={{
           position: 'absolute',
-          top: '-4.5rem',
+          top: '-9rem',
           right: '2rem',
-          height: '400px',
+          height: '800px',
           width: 'auto',
           zIndex: 1,
         }}
@@ -81,7 +81,7 @@ export default function IdleScreen({ onSelectLanguage }) {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -60%)',
-          height: '420px',
+          height: '1050px',
           width: 'auto',
           zIndex: 1,
         }}
