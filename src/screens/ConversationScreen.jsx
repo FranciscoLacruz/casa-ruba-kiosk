@@ -97,7 +97,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
           position: 'absolute',
           top: '2rem',
           left: '2rem',
-          height: '240px',
+          height: '480px',
           width: 'auto',
           zIndex: 2,
         }}
@@ -109,9 +109,9 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
         alt="LCR"
         style={{
           position: 'absolute',
-          top: '-4.5rem',
+          top: '-9rem',
           right: '2rem',
-          height: '400px',
+          height: '800px',
           width: 'auto',
           zIndex: 2,
         }}
@@ -126,7 +126,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '2.5rem',
+          gap: '3rem',
           zIndex: 1,
         }}
       >
@@ -134,8 +134,8 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
         <div
           style={{
             position: 'relative',
-            width: '180px',
-            height: '180px',
+            width: '360px',
+            height: '360px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -146,20 +146,20 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
               <div
                 style={{
                   position: 'absolute',
-                  width: '180px',
-                  height: '180px',
+                  width: '360px',
+                  height: '360px',
                   borderRadius: '50%',
-                  border: '1px solid rgba(200,169,110,0.2)',
+                  border: '2px solid rgba(200,169,110,0.2)',
                   animation: 'ripple 2s ease-out infinite',
                 }}
               />
               <div
                 style={{
                   position: 'absolute',
-                  width: '180px',
-                  height: '180px',
+                  width: '360px',
+                  height: '360px',
                   borderRadius: '50%',
-                  border: '1px solid rgba(200,169,110,0.15)',
+                  border: '2px solid rgba(200,169,110,0.15)',
                   animation: 'ripple 2s ease-out infinite 0.6s',
                 }}
               />
@@ -168,8 +168,8 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
 
           <div
             style={{
-              width: '120px',
-              height: '120px',
+              width: '240px',
+              height: '240px',
               borderRadius: '50%',
               background: isError
                 ? 'radial-gradient(circle at 35% 35%, #8b0000, #3d0000)'
@@ -181,10 +181,10 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
                 ? 'radial-gradient(circle at 35% 35%, #8a7040, #3a2e18)'
                 : 'radial-gradient(circle at 35% 35%, #3a3020, #1a1408)',
               boxShadow: isError
-                ? '0 0 40px rgba(139,0,0,0.4)'
+                ? '0 0 80px rgba(139,0,0,0.4)'
                 : isActive
-                ? '0 0 60px rgba(200,169,110,0.5), 0 0 120px rgba(200,169,110,0.15)'
-                : '0 0 30px rgba(200,169,110,0.15)',
+                ? '0 0 120px rgba(200,169,110,0.5), 0 0 240px rgba(200,169,110,0.15)'
+                : '0 0 60px rgba(200,169,110,0.15)',
               animation: status === ConversationStatus.CONNECTING
                 ? 'breathe 1.5s ease-in-out infinite'
                 : status === ConversationStatus.SPEAKING
@@ -201,16 +201,16 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              height: '40px',
+              gap: '8px',
+              height: '80px',
             }}
           >
             {Array.from({ length: 12 }).map((_, i) => (
               <div
                 key={i}
                 style={{
-                  width: '3px',
-                  borderRadius: '2px',
+                  width: '6px',
+                  borderRadius: '3px',
                   background: '#c8a96e',
                   animation: `waveBar ${0.4 + (i % 4) * 0.15}s ease-in-out infinite alternate`,
                   animationDelay: `${(i * 0.07).toFixed(2)}s`,
@@ -225,11 +225,11 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
         <p
           style={{
             fontFamily: 'Georgia, serif',
-            fontSize: '1.1rem',
+            fontSize: '2.2rem',
             color: isError ? 'rgba(220,100,100,0.9)' : 'rgba(255,255,255,0.6)',
             letterSpacing: '0.05em',
             textAlign: 'center',
-            maxWidth: '480px',
+            maxWidth: '960px',
             lineHeight: 1.5,
           }}
         >
@@ -246,9 +246,9 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
               borderRadius: '8px',
               color: '#c8a96e',
               fontFamily: 'Georgia, serif',
-              fontSize: '1rem',
+              fontSize: '2rem',
               letterSpacing: '0.1em',
-              padding: '0.75rem 2.5rem',
+              padding: '1.5rem 5rem',
               cursor: 'pointer',
               transition: 'all 0.2s',
             }}
@@ -258,62 +258,54 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
         )}
       </div>
 
-      {/* Controles inferiores — centrados */}
+      {/* Botón FINALIZAR — esquina inferior izquierda */}
+      <button
+        onClick={handleEnd}
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '2rem',
+          background: '#9a9a5a',
+          border: 'none',
+          borderRadius: '16px',
+          color: '#f0ead2',
+          fontFamily: 'Arial, Helvetica, sans-serif',
+          fontSize: '4.4rem',
+          fontWeight: '700',
+          letterSpacing: '0.05em',
+          padding: '2rem 4rem',
+          cursor: 'pointer',
+          zIndex: 2,
+          transition: 'transform 0.15s ease',
+          textTransform: 'uppercase',
+        }}
+        onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.93)'; }}
+        onPointerUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+        onPointerLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+      >
+        {t.convEnd}
+      </button>
+
+      {/* Teléfono — esquina inferior derecha (informativo) */}
       <div
         style={{
           position: 'absolute',
-          bottom: '1rem',
-          left: 0,
-          right: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.75rem',
+          bottom: '2rem',
+          right: '2rem',
+          border: '2px solid rgba(255,255,255,0.3)',
+          borderRadius: '16px',
+          padding: '2rem 4rem',
           zIndex: 2,
         }}
       >
-        <button
-          onClick={handleEnd}
+        <p
           style={{
-            background: '#9a9a5a',
-            border: 'none',
-            borderRadius: '16px',
-            color: '#f0ead2',
             fontFamily: 'Arial, Helvetica, sans-serif',
-            fontSize: '2.2rem',
+            fontSize: '4.4rem',
             fontWeight: '700',
+            color: 'rgba(255,255,255,0.6)',
             letterSpacing: '0.05em',
-            padding: '1rem 3rem',
-            cursor: 'pointer',
-            transition: 'transform 0.15s ease',
-            textTransform: 'uppercase',
-          }}
-          onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.93)'; }}
-          onPointerUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
-          onPointerLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          {t.convEnd}
-        </button>
-
-        <p
-          style={{
-            fontFamily: 'Georgia, serif',
-            fontSize: '1.7rem',
-            color: 'rgba(255,255,255,0.5)',
-            textAlign: 'center',
             whiteSpace: 'nowrap',
-            lineHeight: 1.4,
-          }}
-        >
-          {t.convPhoneHint}
-        </p>
-        <p
-          style={{
-            fontFamily: 'Georgia, serif',
-            fontSize: '2.2rem',
-            color: 'rgba(255,255,255,0.8)',
-            fontWeight: '700',
-            letterSpacing: '0.05em',
           }}
         >
           {HOTEL_TIERRA_PHONE}
@@ -330,8 +322,8 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
           50% { transform: scale(1.06); }
         }
         @keyframes waveBar {
-          from { height: 6px; }
-          to { height: 36px; }
+          from { height: 12px; }
+          to { height: 72px; }
         }
       `}</style>
     </div>
