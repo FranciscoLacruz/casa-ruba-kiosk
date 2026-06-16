@@ -1,14 +1,30 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useElevenLabs, ConversationStatus } from '../hooks/useElevenLabs';
 import { getAgentId, HOTEL_TIERRA_PHONE, MAX_CONVERSATION_SECONDS } from '../config/agents';
 import { UI_TEXTS } from '../i18n/ui';
 import wallpaper from '../assets/wallpaper.png';
 import rubaLogo from '../assets/ruba-logo.png';
 import lcrLogo from '../assets/lcr-logo.png';
+import mapaHotel from '../assets/mapa-hotel-tierra.png';
+
+const MAP_DISPLAY_SECONDS = 15;
 
 export default function ConversationScreen({ language, onEnd, onActivity }) {
   const t = UI_TEXTS[language] || UI_TEXTS.es;
-  const { status, errorMessage, startConversation, endConversation } = useElevenLabs();
+  const [showMap, setShowMap] = useState(false);
+  const mapTimerRef = useRef(null);
+
+  const handleClientToolCall = useCallback((toolName) => {
+    if (toolName === 'obtener_direcciones_hotel') {
+      setShowMap(true);
+      clearTimeout(mapTimerRef.current);
+      mapTimerRef.current = setTimeout(() => setShowMap(false), MAP_DISPLAY_SECONDS * 1000);
+    }
+  }, []);
+
+  const { status, errorMessage, startConversation, endConversation } = useElevenLabs({
+    onClientToolCall: handleClientToolCall,
+  });
   const wasActiveRef = useRef(false);
   const maxTimerRef = useRef(null);
 
@@ -41,6 +57,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
   }, [status]);
 
   function handleEnd() {
+    clearTimeout(mapTimerRef.current);
     endConversation();
     onEnd();
   }
@@ -311,6 +328,55 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
           {HOTEL_TIERRA_PHONE}
         </p>
       </div>
+
+      {/* Overlay del mapa */}
+      {showMap && (
+        <div
+          onClick={() => setShowMap(false)}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.85)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10,
+            cursor: 'pointer',
+          }}
+        >
+          <img
+            src={mapaHotel}
+            alt="Mapa Hotel Tierra de Biescas"
+            style={{
+              maxWidth: '85%',
+              maxHeight: '85%',
+              objectFit: 'contain',
+              borderRadius: '16px',
+            }}
+          />
+          <button
+            onClick={() => setShowMap(false)}
+            style={{
+              position: 'absolute',
+              top: '2rem',
+              right: '2rem',
+              background: 'rgba(255,255,255,0.15)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '80px',
+              height: '80px',
+              color: '#fff',
+              fontSize: '2.5rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <style>{`
         @keyframes ripple {

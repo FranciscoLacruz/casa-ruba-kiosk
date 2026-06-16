@@ -17,7 +17,7 @@ function klog(msg) {
   if (window.electron?.log) window.electron.log('ElevenLabs', msg);
 }
 
-export function useElevenLabs() {
+export function useElevenLabs({ onClientToolCall } = {}) {
   const [status, setStatus] = useState(ConversationStatus.IDLE);
   const [errorMessage, setErrorMessage] = useState(null);
   const conversationRef = useRef(null);
@@ -62,6 +62,13 @@ export function useElevenLabs() {
       const conversation = await Conversation.startSession({
         agentId,
         connectionType: 'websocket',
+        clientTools: {
+          obtener_direcciones_hotel: async (parameters) => {
+            klog('Client tool invocado: obtener_direcciones_hotel');
+            onClientToolCall?.('obtener_direcciones_hotel', parameters);
+            return 'Mapa de direcciones mostrado en pantalla';
+          },
+        },
         onConnect: () => {
           klog('Conectado');
           setStatus(ConversationStatus.LISTENING);
