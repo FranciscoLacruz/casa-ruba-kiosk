@@ -5,7 +5,7 @@ import { UI_TEXTS } from '../i18n/ui';
 import wallpaper from '../assets/wallpaper.png';
 import rubaLogo from '../assets/ruba-logo.png';
 import lcrLogo from '../assets/lcr-logo.png';
-import mapaHotel from '../assets/mapa-hotel-tierra.png';
+import mapaHotel from '../assets/mapa-hotel-tierra.jpg';
 
 const MAP_DISPLAY_SECONDS = 15;
 
@@ -114,7 +114,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
           position: 'absolute',
           top: '2rem',
           left: '2rem',
-          height: '480px',
+          height: '360px',
           width: 'auto',
           zIndex: 2,
         }}
@@ -126,9 +126,9 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
         alt="LCR"
         style={{
           position: 'absolute',
-          top: '-9rem',
+          top: '-6.75rem',
           right: '2rem',
-          height: '800px',
+          height: '600px',
           width: 'auto',
           zIndex: 2,
         }}
@@ -284,13 +284,13 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
           left: '2rem',
           background: '#9a9a5a',
           border: 'none',
-          borderRadius: '16px',
+          borderRadius: '13px',
           color: '#f0ead2',
           fontFamily: 'Arial, Helvetica, sans-serif',
-          fontSize: '4.4rem',
+          fontSize: '3.52rem',
           fontWeight: '700',
           letterSpacing: '0.05em',
-          padding: '2rem 4rem',
+          padding: '1.6rem 3.2rem',
           cursor: 'pointer',
           zIndex: 2,
           transition: 'transform 0.15s ease',
@@ -310,15 +310,15 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
           bottom: '2rem',
           right: '2rem',
           border: '2px solid rgba(255,255,255,0.3)',
-          borderRadius: '16px',
-          padding: '2rem 4rem',
+          borderRadius: '13px',
+          padding: '1.6rem 3.2rem',
           zIndex: 2,
         }}
       >
         <p
           style={{
             fontFamily: 'Arial, Helvetica, sans-serif',
-            fontSize: '4.4rem',
+            fontSize: '3.52rem',
             fontWeight: '700',
             color: 'rgba(255,255,255,0.6)',
             letterSpacing: '0.05em',

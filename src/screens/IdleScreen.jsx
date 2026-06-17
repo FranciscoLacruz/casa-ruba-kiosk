@@ -52,7 +52,7 @@ export default function IdleScreen({ onSelectLanguage }) {
           position: 'absolute',
           top: '2rem',
           left: '2rem',
-          height: '480px',
+          height: '360px',
           width: 'auto',
           zIndex: 1,
         }}
@@ -64,9 +64,9 @@ export default function IdleScreen({ onSelectLanguage }) {
         alt="LCR Hoteles y Apartamentos"
         style={{
           position: 'absolute',
-          top: '-9rem',
+          top: '-6.75rem',
           right: '2rem',
-          height: '800px',
+          height: '600px',
           width: 'auto',
           zIndex: 1,
         }}
@@ -81,7 +81,7 @@ export default function IdleScreen({ onSelectLanguage }) {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -60%)',
-          height: '1050px',
+          height: '735px',
           width: 'auto',
           zIndex: 1,
         }}
