@@ -6,19 +6,31 @@ import wallpaper from '../assets/wallpaper.png';
 import rubaLogo from '../assets/ruba-logo.png';
 import lcrLogo from '../assets/lcr-logo.png';
 import mapaHotel from '../assets/mapa-hotel-tierra.jpg';
+import qrReservas from '../assets/qr_reservas.jpeg';
 
-const MAP_DISPLAY_SECONDS = 15;
+const MAP_DISPLAY_SECONDS = 30;
+const QR_DISPLAY_SECONDS = 30;
 
 export default function ConversationScreen({ language, onEnd, onActivity }) {
   const t = UI_TEXTS[language] || UI_TEXTS.es;
   const [showMap, setShowMap] = useState(false);
   const mapTimerRef = useRef(null);
+  const [showQr, setShowQr] = useState(false);
+  const qrTimerRef = useRef(null);
 
   const handleClientToolCall = useCallback((toolName) => {
     if (toolName === 'obtener_direcciones_hotel') {
+      setShowQr(false);
+      clearTimeout(qrTimerRef.current);
       setShowMap(true);
       clearTimeout(mapTimerRef.current);
       mapTimerRef.current = setTimeout(() => setShowMap(false), MAP_DISPLAY_SECONDS * 1000);
+    } else if (toolName === 'mostrar_qr_reserva') {
+      setShowMap(false);
+      clearTimeout(mapTimerRef.current);
+      setShowQr(true);
+      clearTimeout(qrTimerRef.current);
+      qrTimerRef.current = setTimeout(() => setShowQr(false), QR_DISPLAY_SECONDS * 1000);
     }
   }, []);
 
@@ -39,6 +51,8 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
 
     return () => {
       clearTimeout(maxTimerRef.current);
+      clearTimeout(mapTimerRef.current);
+      clearTimeout(qrTimerRef.current);
       endConversation();
     };
   }, [language]);
@@ -58,6 +72,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
 
   function handleEnd() {
     clearTimeout(mapTimerRef.current);
+    clearTimeout(qrTimerRef.current);
     endConversation();
     onEnd();
   }
@@ -356,6 +371,55 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
           />
           <button
             onClick={() => setShowMap(false)}
+            style={{
+              position: 'absolute',
+              top: '2rem',
+              right: '2rem',
+              background: 'rgba(255,255,255,0.15)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '80px',
+              height: '80px',
+              color: '#fff',
+              fontSize: '2.5rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* Overlay del QR de reservas */}
+      {showQr && (
+        <div
+          onClick={() => setShowQr(false)}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.85)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10,
+            cursor: 'pointer',
+          }}
+        >
+          <img
+            src={qrReservas}
+            alt="QR Reservas"
+            style={{
+              maxWidth: '85%',
+              maxHeight: '85%',
+              objectFit: 'contain',
+              borderRadius: '16px',
+            }}
+          />
+          <button
+            onClick={() => setShowQr(false)}
             style={{
               position: 'absolute',
               top: '2rem',
