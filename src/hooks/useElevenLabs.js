@@ -68,6 +68,11 @@ export function useElevenLabs({ onClientToolCall } = {}) {
             onClientToolCall?.('obtener_direcciones_hotel', parameters);
             return 'Mapa de direcciones mostrado en pantalla';
           },
+          mostrar_qr_reserva: async (parameters) => {
+            klog('Client tool invocado: mostrar_qr_reserva');
+            onClientToolCall?.('mostrar_qr_reserva', parameters);
+            return 'QR de reservas mostrado en pantalla';
+          },
         },
         onConnect: () => {
           klog('Conectado');
