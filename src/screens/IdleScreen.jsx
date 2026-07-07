@@ -1,4 +1,4 @@
-import wallpaper from '../assets/wallpaper.png';
+import wallpaper from '../assets/wallpaper.jpg';
 import rubaLogo from '../assets/ruba-logo.png';
 import lcrLogo from '../assets/lcr-logo.png';
 import recepcionista from '../assets/recepcionista-virtual.png';

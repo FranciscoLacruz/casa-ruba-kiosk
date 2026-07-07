@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { useElevenLabs, ConversationStatus } from '../hooks/useElevenLabs';
 import { getAgentId, HOTEL_TIERRA_PHONE, MAX_CONVERSATION_SECONDS } from '../config/agents';
 import { UI_TEXTS } from '../i18n/ui';
-import wallpaper from '../assets/wallpaper.png';
+import wallpaper from '../assets/wallpaper.jpg';
 import rubaLogo from '../assets/ruba-logo.png';
 import lcrLogo from '../assets/lcr-logo.png';
 import mapaHotel from '../assets/mapa-hotel-tierra.jpg';
@@ -10,6 +10,21 @@ import qrReservas from '../assets/qr_reservas.jpeg';
 
 const MAP_DISPLAY_SECONDS = 30;
 const QR_DISPLAY_SECONDS = 30;
+
+const KEYFRAMES_CSS = `
+  @keyframes ripple {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+  @keyframes waveBar {
+    from { height: 12px; }
+    to { height: 72px; }
+  }
+`;
 
 export default function ConversationScreen({ language, onEnd, onActivity }) {
   const t = UI_TEXTS[language] || UI_TEXTS.es;
@@ -183,6 +198,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
                   borderRadius: '50%',
                   border: '2px solid rgba(200,169,110,0.2)',
                   animation: 'ripple 2s ease-out infinite',
+                  willChange: 'transform, opacity',
                 }}
               />
               <div
@@ -193,6 +209,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
                   borderRadius: '50%',
                   border: '2px solid rgba(200,169,110,0.15)',
                   animation: 'ripple 2s ease-out infinite 0.6s',
+                  willChange: 'transform, opacity',
                 }}
               />
             </>
@@ -223,6 +240,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
                 ? 'breathe 0.8s ease-in-out infinite'
                 : 'none',
               transition: 'all 0.4s ease',
+              willChange: 'transform',
             }}
           />
         </div>
@@ -247,6 +265,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
                   animation: `waveBar ${0.4 + (i % 4) * 0.15}s ease-in-out infinite alternate`,
                   animationDelay: `${(i * 0.07).toFixed(2)}s`,
                   opacity: 0.7,
+                  willChange: 'height',
                 }}
               />
             ))}
@@ -442,20 +461,7 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
         </div>
       )}
 
-      <style>{`
-        @keyframes ripple {
-          0% { transform: scale(1); opacity: 0.6; }
-          100% { transform: scale(1.8); opacity: 0; }
-        }
-        @keyframes breathe {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.06); }
-        }
-        @keyframes waveBar {
-          from { height: 12px; }
-          to { height: 72px; }
-        }
-      `}</style>
+      <style>{KEYFRAMES_CSS}</style>
     </div>
   );
 }

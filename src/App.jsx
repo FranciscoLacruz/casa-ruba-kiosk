@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import IdleScreen from './screens/IdleScreen';
 import ConversationScreen from './screens/ConversationScreen';
 import { IDLE_TIMEOUT_SECONDS } from './config/agents';
-import wallpaper from './assets/wallpaper.png';
+import wallpaper from './assets/wallpaper.jpg';
 import rubaLogo from './assets/ruba-logo.png';
 import lcrLogo from './assets/lcr-logo.png';
 const SCREENS = {
