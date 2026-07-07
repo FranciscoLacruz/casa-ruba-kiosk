@@ -6,7 +6,7 @@ import wallpaper from '../assets/wallpaper.jpg';
 import rubaLogo from '../assets/ruba-logo.png';
 import lcrLogo from '../assets/lcr-logo.png';
 import mapaHotel from '../assets/mapa-hotel-tierra.jpg';
-import qrReservas from '../assets/qr_reservas.jpeg';
+import qrReservas from '../assets/QR_reservas2.svg';
 
 const MAP_DISPLAY_SECONDS = 30;
 const QR_DISPLAY_SECONDS = 30;
