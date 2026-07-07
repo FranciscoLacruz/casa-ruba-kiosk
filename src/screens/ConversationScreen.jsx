@@ -431,10 +431,12 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
             src={qrReservas}
             alt="QR Reservas"
             style={{
-              maxWidth: '85%',
-              maxHeight: '85%',
+              width: '60vh',
+              height: '60vh',
               objectFit: 'contain',
               borderRadius: '16px',
+              background: '#fff',
+              padding: '2rem',
             }}
           />
           <button
