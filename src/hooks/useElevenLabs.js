@@ -59,9 +59,23 @@ export function useElevenLabs({ onClientToolCall } = {}) {
     }
 
     try {
+      const now = new Date();
+      const hourMadrid = parseInt(
+        new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Europe/Madrid',
+          hour: '2-digit',
+          hour12: false,
+        }).format(now),
+        10
+      );
+
       const conversation = await Conversation.startSession({
         agentId,
         connectionType: 'websocket',
+        dynamicVariables: {
+          hora_local_actual: hourMadrid,
+          es_antes_de_15: hourMadrid < 15,
+        },
         clientTools: {
           obtener_direcciones_hotel: async (parameters) => {
             klog('Client tool invocado: obtener_direcciones_hotel');
