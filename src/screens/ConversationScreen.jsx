@@ -46,6 +46,8 @@ export default function ConversationScreen({ language, onEnd, onActivity }) {
       setShowQr(true);
       clearTimeout(qrTimerRef.current);
       qrTimerRef.current = setTimeout(() => setShowQr(false), QR_DISPLAY_SECONDS * 1000);
+    } else if (toolName === 'finalizar_conversacion') {
+      setTimeout(() => handleEnd(), 500);
     }
   }, []);
 

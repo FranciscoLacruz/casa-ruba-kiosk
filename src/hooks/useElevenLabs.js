@@ -87,6 +87,11 @@ export function useElevenLabs({ onClientToolCall } = {}) {
             onClientToolCall?.('mostrar_qr_reserva', parameters);
             return 'QR de reservas mostrado en pantalla';
           },
+          finalizar_conversacion: async (parameters) => {
+            klog('Client tool invocado: finalizar_conversacion');
+            onClientToolCall?.('finalizar_conversacion', parameters);
+            return 'Conversación finalizada por el asistente';
+          },
         },
         onConnect: () => {
           klog('Conectado');
